@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AMMIZ | PC Components & Gaming Shop</title>
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #ff6600; /* Orange for AMMIZ */
+            --secondary: #1a1a1a;
+            --dark: #111111;
+            --light: #f8f9fa;
+            --accent: #00ccff;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f4f6f8;
+            color: #333;
+        }
+
+        /* Top Bar */
+        .top-bar {
+            background-color: var(--secondary);
+            color: white;
+            font-size: 0.85rem;
+            padding: 8px 0;
+        }
+
+        /* Navbar */
+        .navbar {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .brand-logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--primary) !important;
+            letter-spacing: -1px;
+        }
+
+        .nav-link {
+            font-weight: 500;
+            color: #333 !important;
+        }
+
+        .nav-link:hover {
+            color: var(--primary) !important;
+        }
+
+        /* Hero Slider */
+        .hero-slider {
+            background: #000;
+            height: 450px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 1s ease;
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+        }
+
+        .slide.active {
+            opacity: 1;
+        }
+
+        .slide-content {
+            background: rgba(0,0,0,0.6);
+            padding: 30px;
+            border-radius: 10px;
+            color: white;
+            max-width: 500px;
+            backdrop-filter: blur(5px);
+        }
+
+        /* Categories */
+        .category-box {
+            text-align: center;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            transition: 0.3s;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            cursor: pointer;
+            text-decoration: none;
+            display: block;
+            color: #333;
+        }
+
+        .category-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .category-box i {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        /* Products */
+        .section-title {
+            font-weight: 700;
+            margin-bottom: 20px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 50%;
+            height: 3px;
+            background: var(--primary);
+        }
+
+        .product-card {
+            background: white;
+            border: none;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: 0.3s;
+            height: 100%;
+            position: relative;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        .product-img-container {
+            height: 220px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #fff;
+        }
+
+        .product-img {
+            max-height: 100%;
+            max-width: 100%;
+            object-fit: contain;
+        }
+
+        .product-actions {
+            position: absolute;
+            top: 10px;
+            right: -50px;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            transition: 0.3s;
+        }
+
+        .product-card:hover .product-actions {
+            right: 10px;
+        }
+
+        .action-btn {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            border: none;
+            background: white;
+            color: #333;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .action-btn:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .badge-custom {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: var(--primary);
+            color: white;
+            padding: 5px 10px;
+            font-size: 0.7rem;
+            font-weight: bold;
+            border-radius: 3px;
+        }
+
+        .price {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: #333;
+        }
+
+        .old-price {
+            text-decoration: line-through;
+            color: #999;
+            font-size: 0.9rem;
+            margin-left: 5px;
+        }
+
+        /* Cart Sidebar */
+        .cart-sidebar {
+            position: fixed;
+            top: 0;
+            right: -400px;
+            width: 380px;
+            height: 100%;
+            background: white;
+            z-index: 2000;
+            box-shadow: -5px 0 15px rgba(0,0,0,0.2);
+            transition: 0.4s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .cart-sidebar.active {
+            right: 0;
+        }
+
+        .cart-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1999;
+            display: none;
+        }
+        
+        .cart-overlay.active { display: block; }
+
+        /* Footer */
+        footer {
+            background: #1a1a1a;
+            color: #ccc;
+            padding-top: 50px;
+        }
+
+        .footer-title {
+            color: white;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .footer-links li {
+            list-style: none;
+            margin-bottom: 10px;
+        }
+
+        .footer-links a {
+            color: #aaa;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary);
+            padding-left: 5px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-slider { height: 300px; }
+            .slide-content { margin: 0 20px; padding: 20px; }
+            .cart-sidebar { width: 100%; right: -100%; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <div class="container d-flex justify-content-between">
+            <span><i class="fas fa-phone-alt me-2"></i> +1 234 567 890</span>
+            <span><i class="fas fa-envelope me-2"></i> sales@ammiz.com</span>
+        </div>
+    </div>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg sticky-top">
+        <div class="container">
+            <a class="navbar-brand brand-logo" href="#">AMMIZ</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="mainNav">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item"><a class="nav-link active" href="#">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#shop">Shop</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#categories">Categories</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+                </ul>
+                <form class="d-flex me-3">
+                    <input class="form-control me-2" type="search" placeholder="Search products...">
+                    <button class="btn btn-outline-dark" type="submit"><i class="fas fa-search"></i></button>
+                </form>
+                <div class="d-flex align-items-center gap-3">
+                    <a href="#" class="text-dark"><i class="fas fa-user fa-lg"></i></a>
+                    <a href="#" class="text-dark position-relative" id="cart-btn">
+                        <i class="fas fa-shopping-cart fa-lg"></i>
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" id="cart-count">
+                            0
+                        </span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Slider -->
+    <div class="hero-slider">
+        <!-- Slide 1 -->
+        <div class="slide active" style="background-image: url('https://images.unsplash.com/photo-1587202372775-e229f172b9d7?q=80&w=1920&auto=format&fit=crop');">
+            <div class="container">
+                <div class="slide-content">
+                    <h4 class="text-warning">New Arrival</h4>
+                    <h1>RTX 4090 Series</h1>
+                    <p>Experience the next generation of gaming graphics.</p>
+                    <button class="btn btn-warning fw-bold" onclick="filterProducts('graphics')">Shop Now</button>
+                </div>
+            </div>
+        </div>
+        <!-- Slide 2 -->
+        <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1593640408182-31c70c8268f5?q=80&w=1920&auto=format&fit=crop');">
+            <div class="container">
+                <div class="slide-content">
+                    <h4 class="text-info">Best Sellers</h4>
+                    <h1>Pro Gaming Laptops</h1>
+                    <p>Unleash your potential with high performance.</p>
+                    <button class="btn btn-info fw-bold" onclick="filterProducts('laptops')">View Collection</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slider Controls -->
+        <div style="position:absolute; bottom:20px; right:20px; z-index:10;">
+            <button class="btn btn-light btn-sm" onclick="prevSlide()"><i class="fas fa-chevron-left"></i></button>
+            <button class="btn btn-light btn-sm" onclick="nextSlide()"><i class="fas fa-chevron-right"></i></button>
+        </div>
+    </div>
+
+    <!-- Categories -->
+    <section id="categories" class="container my-5">
+        <div class="row g-4 text-center">
+            <div class="col-6 col-md-4 col-lg-2">
+                <a href="#" onclick="filterProducts('graphics')" class="category-box">
+                    <i class="fas fa-microchip"></i>
+                    <h6>Graphics Cards</h6>
+                </a>
+            </div>
+            <div class="col-6 col-md-4 col-lg-2">
+                <a href="#" onclick="filterProducts('processors')" class="category-box">
+                    <i class="fas fa-server"></i>
+                    <h6>Processors</h6>
+                </a>
+            </div>
+            <div class="col-6 col-md-4 col-lg-2">
+                <a href="#" onclick="filterProducts('laptops')" class="category-box">
+                    <i class="fas fa-laptop"></i>
+                    <h6>Laptops</h6>
+                </a>
+            </div>
+            <div class="col-6 col-md-4 col-lg-2">
+                <a href="#" onclick="filterProducts('peripherals')" class="category-box">
+                    <i class="fas fa-headset"></i>
+                    <h6>Audio & Headset</h6>
+                </a>
+            </div>
+            <div class="col-6 col-md-4 col-lg-2">
+                <a href="#" onclick="filterProducts('mice')" class="category-box">
+                    <i class="fas fa-mouse"></i>
+                    <h6>Gaming Mice</h6>
+                </a>
+            </div>
+            <div class="col-6 col-md-4 col-lg-2">
+                <a href="#" onclick="filterProducts('monitors')" class="category-box">
+                    <i class="fas fa-desktop"></i>
+                    <h6>Monitors</h6>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section id="shop" class="container my-5">
+        <h2 class="section-title">Featured Products</h2>
+        
+        <!-- Filter Buttons -->
+        <div class="mb-4">
+            <button class="btn btn-sm btn-dark me-1" onclick="filterProducts('all')">All</button>
+            <button class="btn btn-sm btn-outline-dark me-1" onclick="filterProducts('graphics')">Graphics Cards</button>
+            <button class="btn btn-sm btn-outline-dark me-1" onclick="filterProducts('laptops')">Laptops</button>
+            <button class="btn btn-sm btn-outline-dark me-1" onclick="filterProducts('peripherals')">Peripherals</button>
+        </div>
+
+        <div class="row g-4" id="product-grid">
+            <!-- JS will populate this -->
+        </div>
+    </section>
+
+    <!-- Why Choose Us -->
+    <section class="bg-white py-5 my-5">
+        <div class="container">
+            <div class="row text-center">
+                <div class="col-md-3 mb-3">
+                    <i class="fas fa-shipping-fast fa-3x text-primary mb-3"></i>
+                    <h5>Fast Shipping</h5>
+                    <p class="text-muted small">Free delivery on orders over $1000</p>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <i class="fas fa-shield-alt fa-3x text-primary mb-3"></i>
+                    <h5>Secure Payment</h5>
+                    <p class="text-muted small">100% secure payment methods</p>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <i class="fas fa-undo fa-3x text-primary mb-3"></i>
+                    <h5>Easy Returns</h5>
+                    <p class="text-muted small">30-day return policy</p>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <i class="fas fa-headset fa-3x text-primary mb-3"></i>
+                    <h5>24/7 Support</h5>
+                    <p class="text-muted small">Dedicated customer support</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="container my-5">
+        <div class="row">
+            <div class="col-md-6">
+                <h2 class="section-title">Contact Us
